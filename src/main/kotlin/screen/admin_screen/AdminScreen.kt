@@ -36,14 +36,7 @@ fun AdminScreen() {
                     IconButton(onClick = {
                         viewModel.searchProductByName()
                     }) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "Поиск Клиента")
-                    }
-                    if(userRole == Role.ADMIN){
-                        IconButton(onClick = {
-
-                        }) {
-                            Icon(imageVector = Icons.Default.Delete, contentDescription = "Очистить базу")
-                        }
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "Поиск имени продукта")
                     }
                     IconButton(onClick = {
                         viewModel.getAllItems()
@@ -91,7 +84,7 @@ fun AdminScreen() {
                                 UnifiedDataItem(unifiedData, userRole = userRole, onClick = {
                                     viewModel.deleteProductByName(unifiedData.productName)
                                 }, onClickUpdate = {
-                                    viewModel.updateProductInfo(unifiedData.productName, 22f, 22)
+                                    viewModel.updateProductInfo(unifiedData.productName, 22f, 999)
                                 })
                             }
                             item {
