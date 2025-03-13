@@ -17,7 +17,6 @@ public class ServiceImpl implements Service {
     ) throws Exception {
         try {
             var result = db.connectionDB(username, password);
-            createTables();
             if (username.contains("app")) {
                 return Role.USER;
             } else {
@@ -51,7 +50,7 @@ public class ServiceImpl implements Service {
     @Override
     public List<UnifiedData> getAllItems(){
         var result = new ArrayList<UnifiedData>();
-        var res = db.callProcedureWithParam("get_all_items()");
+        var res = db.callProcedureWithParam("get_all_items");
 
         try {
             while (res.next()){
@@ -101,9 +100,9 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public List<UnifiedData> findByClientName(String clientName) {
+    public List<UnifiedData> findByProductName(String productName) {
         List<UnifiedData> data = new ArrayList<>();
-        var result = db.callProcedureWithParam("search_by_product_name", clientName);
+        var result = db.callProcedureWithParam("search_by_product_name", productName);
 
         try {
             while (result.next()){
@@ -127,12 +126,47 @@ public class ServiceImpl implements Service {
 
         try {
             while (res.next()){
-                return res.getBoolean(0);
+                return res.getBoolean(1);
             }
         } catch (Exception e){
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Role getRole() {
+        try {
+            var res = db.callProcedureWithParam("get_current_user_role");
+            res.next();
+            var str = res.getString(1);
+            if (str.contains("guest")){
+                return Role.USER;
+            } else {
+                return Role.ADMIN;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Role.NULL;
+        }
+    }
+
+    @Override
+    public void createUser(String username, String password, Role role){
+        var roleString = "";
+        if(role == Role.ADMIN){
+            roleString = "admin";
+            db.callProcedureWithParam("create_user", username, password, roleString);
+        } else {
+            roleString = "guest";
+            db.callProcedureWithParam("create_user", username, password, roleString);
+        }
+
+    }
+
+    @Override
+    public void deleteDataBase(){
+        db.callProcedureWithParam("drop_table", "unifieddata");
     }
 
     private UnifiedData mapResultSetToUnifiedData(ResultSet rs) throws SQLException {

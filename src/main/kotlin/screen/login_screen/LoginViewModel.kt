@@ -22,11 +22,7 @@ class LoginViewModel():ViewModel(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val result = service.login(_userName.value, _password.value)
-                if (result == Role.ADMIN){
-                    onAdminCompleate.invoke()
-                } else {
-                    onUserCompleate.invoke()
-                }
+                onAdminCompleate.invoke()
             } catch (e:Exception){
                 e.printStackTrace()
             }

@@ -17,9 +17,15 @@ public interface Service {
 
     Integer insertData(UnifiedData unifiedData);
 
-    List<UnifiedData> findByClientName(String clientName);
+    List<UnifiedData> findByProductName(String clientName);
 
     void updateProductInfo(String productName, Float newPrice, Integer newQuantity);
 
     Boolean deleteByProductName(String productName);
+
+    Role getRole();
+
+    void createUser(String username, String password, Role role);
+
+    void deleteDataBase();
 }
