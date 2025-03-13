@@ -47,6 +47,11 @@ fun AdminScreen() {
                 if (userRole == Role.ADMIN){
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Button(onClick = {
+                            viewModel.insertData()
+                        }) {
+                            Text(text = "Добавить запись")
+                        }
+                        Button(onClick = {
                             viewModel.deleteTable()
                         }) {
                             Text(text = "Удалить таблицу")
@@ -186,11 +191,6 @@ fun AdminScreen() {
                                             modifier = Modifier.width(sizeTextField),
                                             value = state.taskDescription,
                                             onValueChange = { viewModel.updateTaskDescription(it) })
-                                        Button(onClick = {
-                                            viewModel.insertData()
-                                        }) {
-                                            Text(text = "Добавить запись")
-                                        }
                                     }
                                 }
                             }
